@@ -163,14 +163,12 @@
   class Todos extends React.Component {
     addItem = (e) => {
       e.preventDefault();
-      const name = this.input.value;
-      this.input.value = '';
-
-      this.props.store.dispatch(addTodoAction({
-        id: generateId(),
-        name,
-        complete: false,
-      }))
+      return API.saveTodo(this.input.value).then((todo) => {
+        this.props.store.dispatch(addTodoAction(todo));
+        this.input.value = '';
+      }).catch(() => {
+        alert("Error persisting todo")
+      });
     };
     removeItem = (todo) => {
       this.props.store.dispatch(removeTodoAction(todo.id));
@@ -181,8 +179,8 @@
     };
     toggleItem = (todo) => {
       this.props.store.dispatch(toggleTodoAction(todo.id));
-      return API.API.saveTodoToggle(todo.id).catch(() => {
-        this.props.store.dispatch(addGoalAction(goal));
+      return API.saveTodoToggle(todo.id).catch(() => {
+        this.props.store.dispatch(toggleTodoAction(goal));
         alert("Error trying to toggle todo")
       })
     };
@@ -210,13 +208,12 @@
   class Goals extends React.Component {
     addItem = (e) => {
       e.preventDefault();
-      const name = this.input.value;
-      this.input.value = '';
-
-      this.props.store.dispatch(addGoalAction({
-        id: generateId(),
-        name,
-      }))
+      return API.saveGoal(this.input.value).then((goal) => {
+        this.props.dispatch(addGoalAction(goal));
+        this.input.value = '';
+      }).catch(() => {
+        alert("Error persisting goal!")
+      });
     };
     removeItem = (goal) => {
       this.props.store.dispatch(removeGoalAction(goal.id));
