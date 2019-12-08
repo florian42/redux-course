@@ -173,10 +173,18 @@
       }))
     };
     removeItem = (todo) => {
-      this.props.store.dispatch(removeTodoAction(todo.id))
+      this.props.store.dispatch(removeTodoAction(todo.id));
+      return API.deleteTodo(todo.id).catch(() => {
+        this.props.store.dispatch(addGoalAction(goal));
+        alert("Error trying to delete todo")
+      })
     };
     toggleItem = (todo) => {
-      this.props.store.dispatch(toggleTodoAction(todo.id))
+      this.props.store.dispatch(toggleTodoAction(todo.id));
+      return API.API.saveTodoToggle(todo.id).catch(() => {
+        this.props.store.dispatch(addGoalAction(goal));
+        alert("Error trying to toggle todo")
+      })
     };
     render() {
       return (
@@ -211,7 +219,11 @@
       }))
     };
     removeItem = (goal) => {
-      this.props.store.dispatch(removeGoalAction(goal.id))
+      this.props.store.dispatch(removeGoalAction(goal.id));
+      return API.deleteGoal(goal.id).catch(() => {
+        this.props.store.dispatch(addGoalAction(goal));
+        alert("Error trying to delete goal")
+      })
     };
     render() {
       return (
